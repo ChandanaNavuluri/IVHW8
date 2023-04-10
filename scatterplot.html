@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Scatter Plot Example</title>
+    <!-- Load Plotly.js library -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body>
+    <div id="plot"></div>
+    <script>
+        // Load data from CSV file
+        Plotly.d3.csv("https://raw.githubusercontent.com/plotly/datasets/master/gapminderDataFiveYear.csv", function (err, data) {
+            if (err) throw err;
+
+            // Extract variables from data
+            var year = [];
+            var gdp = [];
+            var life_expectancy = [];
+            var population = [];
+
+            data.forEach(function (d) {
+                year.push(d.year);
+                gdp.push(d.gdpPercap);
+                life_expectancy.push(d.lifeExp);
+                population.push(d.pop);
+            });
+
+            // Create trace for scatter plot
+            var trace = {
+                x: gdp,
+                y: life_expectancy,
+                mode: 'markers',
+                marker: {
+                    size: population,
+                    sizemode: 'area',
+                    sizeref: 200000,
+                    color: year,
+                    colorscale: 'Earth'
+                },
+                type: 'scatter',
+                text: year,
+                hovertemplate:
+                    "<b>GDP per capita:</b> %{x:$,.0f}<br>" +
+                    "<b>Life expectancy:</b> %{y:.2f}<br>" +
+                    "<b>Population:</b> %{marker.size:,.0f}<br>" +
+                    "<b>Year:</b> %{text}<br>"
+            };
+
+            // Create layout for scatter plot
+            var layout = {
+                title: 'GDP per capita vs. Life expectancy',
+                xaxis: {
+                    title: 'GDP per capita (USD)'
+                },
+                yaxis: {
+                    title: 'Life expectancy (years)'
+                }
+            };
+
+            // Plot the scatter plot
+            Plotly.newPlot('plot', [trace], layout);
+        });
+    </script>
+</body>
+
+
+</html>
