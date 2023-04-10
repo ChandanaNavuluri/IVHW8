@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body>
+    <div id="myPlot"></div>
+    <script>
+        // Load data from the CSV file
+        Plotly.d3.csv("https://raw.githubusercontent.com/plotly/datasets/master/gapminderDataFiveYear.csv", function (data) {
+            // Define the trace for the choropleth map
+            var trace = {
+                type: "choropleth",
+                locationmode: "country names",
+                locations: data.map(d => d["country"]),
+                z: data.map(d => d["gdpPercap"]),
+                autocolorscale: true
+            };
+
+            // Define the layout for the plot
+            var layout = {
+                title: "Global GDP per Capita",
+                geo: {
+                    projection: {
+                        type: "mercator"
+                    }
+                }
+            };
+
+            // Create the plot
+            Plotly.newPlot("myPlot", [trace], layout);
+        });
+    </script>
+</body>
+
+</html>
